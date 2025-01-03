@@ -1,0 +1,61 @@
+-------
+git --version   -->get version details
+git config --global user.name "lonesantosh183"  --> get user detail
+git config --global user.name --> currently used uName
+git config --global user.email "lonesantosh183@gmail.com" --> get email details
+git config --global user.email --> currently used email
+
+git config --global --edit  --> open in edit mode for changes
+
+mkdir GitHub --> create filder 
+cd GitHub --> change path
+
+git init  --> make folder as git
+ls --> list down all files
+git status --> give status of folder how many changes done like file(create/update/delete)
+
+git add . --> all files added to stagging area
+git add Sum.java  --> add Sum.Java file for git(file added in stagging area )
+git status        --> now Sum.java file available for commit
+git commit -m "Basics java programs"  --> add msg for commit time
+git log  --> show all details of commit happend
+git status --> show file where you changes done in file
+
+git checkout <commit hashcode/branch name> --> go to any location
+git checkout hashcode --> move in mention branch
+git checkout master  --> move into master branch
+git branch --> branch details 
+
+git branch dev --> create dev branch
+git merger branchname --> marge branches
+git merge dev
+
+touch .gitignore --don't want to add in git
+
+when you create repo using UI login
+used option  ...or push an existing repository from cmd line
+1. git remote add origin https://github.com/lonesantosh/Basics-java-programs.git
+
+git remote -v --> show origin
+2.  git push -u origin master  --> push files
+	git push
+
+Setting/manage access -->any one can add files in my repo
+
+git clone url --> url code section like download we used url copy and paste here to clone
+
+-----
+want to add new project into remote git
+1. right click on project and select git bash after that type git init
+2. git status
+3. git add .  --> add all files  or single file like git add file_name
+4. git commit -m "Book Crud repository"
+5.git remote add origin https://github.com/lonesantosh/BooKCrudRepo.git
+6. git branch -M main
+7.git push -u origin main
+
+for single file add
+1. git add file name
+2. git commit -m "message"
+3.git branch -M main
+4. git push -u origin main
