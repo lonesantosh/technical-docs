@@ -1,0 +1,66 @@
+
+
+Kafka installation
+1. download latest version and extract into c drive, rename folder as kafka
+ https://kafka.apache.org/community/downloads/
+ 
+2. create KAFKA-HOME & path set bin  
+change in server.properties file and java 17+ needed for kafka_2.13-4.3.0 version
+log.dirs=/tmp/kraft-combined-logs ----> log.dirs=C:/kafka/kraft-combined-logs
+
+1.Generate a Cluster UUID
+	kafka-storage.bat random-uuid
+2. Format Log Directories
+	kafka-storage.bat format -t GysuV3NLQVSHZ664zXUGaw -c ..\..\config\server.properties
+3. Start the Kafka Server
+	kafka-storage.bat format --standalone -t MAc7OEL7RWCTdvrJcTA_0A -c ..\..\config\server.properties
+4. kafka-server-start.bat ..\..\config\server.properties
+
+To run a Spring Boot + Kafka application, you need three things:
+ 1. Kafka Server running
+ 2. Spring Boot Producer
+ 3. Spring Boot Consumer
+ 
+Note: kafka server is running so you need to open new cmd in C:\kafka\bin\windows> location and run below command check topic names
+kafka-topics.bat --list --bootstrap-server localhost:9092
+
+kafka-topics.bat --create --topic colors --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+
+Spring boot code
+ Note: @EnableKafka in main application or if not added then also worked
+1. Producer
+@RestController
+public class Producer {
+	 @Autowired
+	    private KafkaTemplate<String, String> kafkaTemplate;
+
+	    @GetMapping("/send")
+	    public String sendMessage(@RequestParam String message) {
+	        kafkaTemplate.send("colors", message);
+	        return "Message Sent Successfully";
+	    }
+}
+2. Consumer
+@Service
+public class Consumer {
+
+	 @KafkaListener(topics = "colors", groupId = "my-group")
+	    public void consumeMessage(String message) {
+	        System.out.println("Received Message: " + message);
+	    }
+}
+3.application.properties file
+
+spring.kafka.bootstrap-servers=localhost:9092
+
+# Producer
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+
+# Consumer
+spring.kafka.consumer.group-id=my-group
+spring.kafka.consumer.auto-offset-reset=earliest
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+http://localhost:8080/send?message=blue
